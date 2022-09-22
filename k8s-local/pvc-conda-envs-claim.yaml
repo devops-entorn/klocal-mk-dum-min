@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: conda-envs-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: hostpath
+  resources:
+    requests:
+      storage: 25Gi

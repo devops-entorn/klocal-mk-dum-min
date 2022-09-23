@@ -231,7 +231,7 @@ ingress:
         set $user $user_id;
       }
       if ($pg = 1) {
-        rewrite ^/hub/(?<arg_suffix>.*) "https://$server_name/$user_id/pgadmin/${arg_suffix}" break;
+        rewrite ^/hub/(?<arg_suffix>.*) "https://$server_name/user/$user_id/pgadmin/${arg_suffix}" break;
       }
 
       proxy_hide_header Allow;

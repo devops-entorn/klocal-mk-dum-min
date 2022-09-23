@@ -121,6 +121,8 @@ singleuser:
                 mountPath: /var/lib/docker
               - name: volume-{username}
                 mountPath: /home/{username}
+              - name: docker-sock-{username}
+                mountPath: /run
       security_context:
         privileged: true
         fsGroup: 100
@@ -142,6 +144,8 @@ singleuser:
                 mountPath: /var/lib/docker
               - name: volume-{username}
                 mountPath: /home/{username}
+              - name: docker-sock-{username}
+                mountPath: /run                
       security_context:
         privileged: true
         fsGroup: 100          

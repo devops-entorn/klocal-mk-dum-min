@@ -75,7 +75,7 @@ singleuser:
     homeMountPath: /home/{username}
     dynamic:
       storageClass: hostpath 
-    capacity: 25Gi
+    capacity: 20Gi
   image:
     name: entorn-io/singleuser 
     tag: dev-0.1.0

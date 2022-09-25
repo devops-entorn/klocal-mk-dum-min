@@ -13,6 +13,8 @@ echo
 ./helm-jupyterhub-install.sh
 ./set-storage-docker-desktop.sh
 
+kubectl --namespace=entorn apply -f ssh-service.yaml
+
 echo
 echo "K8s environment is ready now."
 echo "You may start entorn now."

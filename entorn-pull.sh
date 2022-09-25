@@ -15,10 +15,11 @@ pull_image data
 pull_image ops
 
 docker pull ${remote_base_name}-hub:$ver
-docker pull ${remote_base_name}-dind:$ver
 docker tag ${remote_base_name}-hub:$ver entorn-io/hub:${ver}
-docker tag ${remote_base_name}-dind:$ver entorn-io/dind:${ver}
 docker rmi ${remote_base_name}-hub:$ver
+
+docker pull ${remote_base_name}-dind:$ver
+docker tag ${remote_base_name}-dind:$ver entorn-io/dind:${ver}
 docker rmi ${remote_base_name}-dind:$ver
 
 docker images | grep entorn | grep "$ver"

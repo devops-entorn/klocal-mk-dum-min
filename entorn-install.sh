@@ -8,7 +8,8 @@ if grep -q "UserKnownHostsFile" "$file"; then
         echo
 else
         echo "alias ssh='ssh -o UserKnownHostsFile=/dev/null'" >> $file
-        echo "ssh alias is now set."
+        echo "alias sshfs='sshfs -o UserKnownHostsFile=/dev/null'" >> $file
+	echo "ssh alias is now set."
         echo
 fi
 

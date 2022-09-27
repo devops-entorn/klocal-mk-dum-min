@@ -22,7 +22,7 @@ fi
 echo "entorn-mount is now available"
 
 
-cd ./k8s-dummy-local/
+cd ./k8s-ilg-local/
 ./install-k8s-entorn.sh
 
 exit 0

@@ -100,6 +100,8 @@ singleuser:
                 mountPath: /home/{username}
               - name: docker-sock-{username}
                 mountPath: /run
+              - name: dbdata
+                mountPath: /opt/dbdata                
         security_context:
           privileged: true
           fsGroup: 100
@@ -123,6 +125,8 @@ singleuser:
                 mountPath: /home/{username}
               - name: docker-sock-{username}
                 mountPath: /run
+              - name: dbdata
+                mountPath: /opt/dbdata                
       security_context:
         privileged: true
         fsGroup: 100
@@ -145,7 +149,9 @@ singleuser:
               - name: volume-{username}
                 mountPath: /home/{username}
               - name: docker-sock-{username}
-                mountPath: /run                
+                mountPath: /run       
+              - name: dbdata
+                mountPath: /opt/dbdata                
       security_context:
         privileged: true
         fsGroup: 100          

@@ -15,21 +15,22 @@ fi
 
 mkdir -p $HOME/.local/bin
 
-cp ./bin/entorn-mount $HOME/.local/bin
-chmod +x $HOME/.local/bin/entorn-mount
-if [ ! -L "$HOME/.local/bin/entorn_mount" ]; then
-	ln -s $HOME/.local/bin/entorn-mount $HOME/.local/bin/entorn_mount
+install_script() {
+cp ./bin/entorn-$1 $HOME/.local/bin
+chmod +x $HOME/.local/bin/entorn-$1
+if [ ! -L "$HOME/.local/bin/entorn_$1" ]; then
+	ln -s $HOME/.local/bin/entorn-$1 $HOME/.local/bin/entorn_$1
 fi
-echo "entorn-mount is now available"
+echo "entorn-$1 is now available"
 echo
+}
 
-cp ./bin/entorn-restart $HOME/.local/bin
-chmod +x $HOME/.local/bin/entorn-restart
-if [ ! -L "$HOME/.local/bin/entorn_restart" ]; then
-        ln -s $HOME/.local/bin/entorn-restart $HOME/.local/bin/entorn_restart
-fi
-echo "entorn-restart is now available"
-echo
+install_script mount
+install_script restart
+install_script stop
+install_script start
+
+cp ./k8s-ilg-local/config.yaml $HOME/.local/
 
 cd ./k8s-ilg-local/
 ./install-k8s-entorn.sh

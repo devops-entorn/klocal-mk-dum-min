@@ -14,16 +14,22 @@ else
         k delete po $jupyter_image > /dev/null 2>&1
 fi
 
+error=false
 
 if [ "$hub_image" == "" ]; then
 	echo "Error: hub pod not found!"
+	error=true
 else
 	echo "Restarting $hub_image ..."
 	k delete po $hub_image > /dev/null 2>&1
 fi
 
 echo
-echo "Entorn has been restarted."
+if [ "$error" == "false" ]; then
+    echo "Entorn has been restarted."
+else
+    echo "Entorn Not started. Try entorn-start"
+fi
 echo
 
 exit 0

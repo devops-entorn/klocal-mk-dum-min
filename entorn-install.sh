@@ -29,6 +29,10 @@ install_script mount
 install_script restart
 install_script stop
 install_script start
+install_script update
+
+cp ./bin/entorn $HOME/.local/bin
+chmod +x $HOME/.local/bin/entorn
 
 cp ./k8s-ilg-local/config.yaml $HOME/.local/
 

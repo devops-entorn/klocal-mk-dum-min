@@ -77,8 +77,8 @@ singleuser:
       storageClass: hostpath 
     capacity: 20Gi
   image:
-    name: entorn-io/singleuser 
-    tag: dev-0.1.0
+    name: entorn-io/singleuser-dev 
+    tag: latest
     pullPolicy: IfNotPresent
   profileList:
     - display_name: "Entorn DEV"
@@ -86,7 +86,7 @@ singleuser:
       kubespawner_override:
         extra_containers:
           - name: docker
-            image: entorn-io/dind:0.1.0
+            image: entorn-io/dind:latest
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -108,10 +108,10 @@ singleuser:
     - display_name: "Entorn BIO"
       description: "Entorn de Data Science, BioInformàtica i Big Data"
       kubespawner_override:
-        image: entorn-io/singleuser:data-0.1.0
+        image: entorn-io/singleuser-data:latest
         extra_containers:
           - name: docker
-            image: entorn-io/dind:0.1.0
+            image: entorn-io/dind:latest
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -133,10 +133,10 @@ singleuser:
     - display_name: "Entorn OPS"
       description: "Entorn bash, ansible, docker, jenkins"
       kubespawner_override:
-        image: entorn-io/singleuser:ops-0.1.0
+        image: entorn-io/singleuser-ops:latest
         extra_containers:
           - name: docker
-            image: entorn-io/dind:0.1.0
+            image: entorn-io/dind:latest
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -157,8 +157,8 @@ singleuser:
         fsGroup: 100          
 hub:
   image:
-    name: entorn-io/hub
-    tag: 0.1.0
+    name: entorn-io/hub-lti
+    tag: latest
     pullPolicy: IfNotPresent
   config:
     extraEnv:

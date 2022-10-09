@@ -7,6 +7,10 @@ then
     exit 1;
 fi
 
+if [ -f "/etc/fuse.conf" ]; then
+	    sudo sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
+fi
+
 user=$1
 dir=$HOME/entorn-$user
 

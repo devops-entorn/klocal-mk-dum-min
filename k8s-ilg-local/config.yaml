@@ -78,7 +78,7 @@ singleuser:
     capacity: 20Gi
   image:
     name: entorn-io/singleuser-dev 
-    tag: latest
+    tag: 0.1.0
     pullPolicy: IfNotPresent
   profileList:
     - display_name: "Entorn DEV"
@@ -86,7 +86,7 @@ singleuser:
       kubespawner_override:
         extra_containers:
           - name: docker
-            image: entorn-io/dind:latest
+            image: entorn-io/dind:0.1.0
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -108,10 +108,10 @@ singleuser:
     - display_name: "Entorn BIO"
       description: "Entorn de Data Science, BioInformàtica i Big Data"
       kubespawner_override:
-        image: entorn-io/singleuser-data:latest
+        image: entorn-io/singleuser-data:0.1.0
         extra_containers:
           - name: docker
-            image: entorn-io/dind:latest
+            image: entorn-io/dind:0.1.0
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -133,10 +133,10 @@ singleuser:
     - display_name: "Entorn OPS"
       description: "Entorn bash, ansible, docker, jenkins"
       kubespawner_override:
-        image: entorn-io/singleuser-ops:latest
+        image: entorn-io/singleuser-ops:0.1.0
         extra_containers:
           - name: docker
-            image: entorn-io/dind:latest
+            image: entorn-io/dind:0.1.0
             imagePullPolicy: IfNotPresent
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -158,7 +158,7 @@ singleuser:
 hub:
   image:
     name: entorn-io/hub-lti
-    tag: latest
+    tag: 0.1.0
     pullPolicy: IfNotPresent
   config:
     extraEnv:

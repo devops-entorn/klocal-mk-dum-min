@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver="latest"
+ver="0.1.0"
 
 if [ ! -z "$1" ]; then 
    ver="$1"   

@@ -4,33 +4,8 @@ shopt -s expand_aliases
 
 alias k="kubectl --namespace=entorn"
 
-hub_image=`k get po | grep hub | cut -f1 -d" "`
-jupyter_image=`k get po | grep jupyter | cut -f1 -d" "`
+entorn-stop
 
-if [ "$jupyter_image" == "" ]; then
-        echo "Jupyter singleuser pod not found." 
-else
-        echo "Stopping $jupyter_image ..."
-        k delete po $jupyter_image > /dev/null 2>&1
-fi
-
-error=false
-
-if [ "$hub_image" == "" ]; then
-	echo "Error: hub pod not found!"
-	error=true
-else
-	echo "Restarting $hub_image ..."
-	k delete po $hub_image > /dev/null 2>&1
-fi
-
-echo
-if [ "$error" == "false" ]; then
-    echo "Entorn has been restarted."
-else
-    echo "Entorn Not started. Try entorn-start"
-fi
-echo
+entorn-start
 
 exit 0
-

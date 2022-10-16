@@ -1,0 +1,32 @@
+#!/bin/bash
+
+password=pluralcamp
+
+if [ -z "$1" ]; then
+    port=2222
+else
+    port=$1
+fi
+
+user=$(entorn-getuser 2> /dev/null)
+
+if [ "$user" == "" ]; then
+    echo "ERROR: Is you Entorn Server running?"
+    echo "You may try starting your Entorn Server from JupyterHub"
+    echo
+    exit 1
+fi
+
+ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R "[localhost]:$port" > /dev/null
+
+echo "DISPLAY=$DISPLAY" > .sshenv
+echo "NB_USER=$user" >> .sshenv
+
+sshpass -p "$password" scp -P $port .sshenv $user@localhost:~/.ssh/environment 2> /dev/null
+
+rm -f .sshenv
+
+sshpass -p "$password" ssh -o SendEnv=DISPLAY -X -o StrictHostKeyChecking=no -p $port $user@localhost 2> /dev/null
+
+exit 0
+

@@ -11,7 +11,7 @@ helm upgrade --cleanup-on-fail \
   --namespace $NAMESPACE \
   --create-namespace \
   --version=$VERSION \
-  --values $HOME/.local/config.yaml
+  --values $HOME/.local/config.yaml > /dev/null
 
 echo
 echo "Entorn successfully started !"

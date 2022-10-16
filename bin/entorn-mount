@@ -1,26 +1,48 @@
 #!/bin/bash
 
-if [[ -z $1  ]]
+# make sure path is correct
+res=$(echo $PATH | grep $(whoami))
+if [ -z "$res" ]; then 
+	export PATH=$HOME/.local/bin:$PATH 
+fi
+
+# user can be overriden
+if [[ ! -z $1  ]]
 then
-    echo "ERROR: A username must be passed";
-    echo
-    exit 1;
+    user=$1
+else    
+    user=$(entorn-getuser 2> /dev/null)
+fi
+
+if [ "$user" == "" ]; then
+        echo "ERROR: Is you Entorn Server running?"
+        echo "You may try starting your Entorn Server from JupyterHub"
+        echo
+        exit 1
 fi
 
 if [ -f "/etc/fuse.conf" ]; then
 	    sudo sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
 fi
 
-user=$1
 dir=$HOME/entorn-$user
+
+mounted=$(find $dir -maxdepth 0 -empty -exec echo {} is empty. \;)
+
+if [ "$mounted" == "" ]; then
+	echo
+	echo "$user's Entorn already mounted at $dir"
+	echo
+	exit 1
+fi
 
 mkdir -p $dir 
 sudo mkdir -p /home/godrive
 sudo chown $USER /home/godrive
 
-sshfs -o UserKnownHostsFile=/dev/null,allow_other,default_permissions -p 2222 $user@localhost:/home/$user $dir
+echo pluralcamp | sshfs -o UserKnownHostsFile=/dev/null,allow_other,default_permissions -o password_stdin -o StrictHostKeyChecking=no -o kernel_cache -p 2222 $user@localhost:/home/$user $dir
 
-sshfs -o UserKnownHostsFile=/dev/null,allow_other,default_permissions -p 2222 $user@localhost:/home/godrive /home/godrive
+echo pluralcamp | sshfs -o UserKnownHostsFile=/dev/null,allow_other,default_permissions -o password_stdin -o StrictHostKeyChecking=no -o kernel_cache -p 2222 $user@localhost:/home/godrive /home/godrive
 
 echo
 if [ $? -eq 0 ]; then
@@ -30,5 +52,11 @@ else
 fi
 echo
 
-exit 0
+## Open window if WSL
+kernel_ver=$(uname -a | grep WSL)
+if [ "$kernel_ver" != "" ]; then
+    cd $dir
+    explorer.exe .
+fi
 
+exit 0

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+sudo hostname `cat /etc/hostname` > /dev/null
+
+if [ -f "/etc/fuse.conf" ]; then
+	    sudo sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
+fi
+
+user=root
+dir=/root/entorn
+
+sudo mkdir -p $dir 
+sudo chmod 777 $dir
+
+sudo umount $dir > /dev/null 2>&1
+
+echo pluralcamp | sudo sshfs -o UserKnownHostsFile=/dev/null,allow_other,default_permissions -o password_stdin -o StrictHostKeyChecking=no -o kernel_cache -p 2222 $user@localhost:/ $dir
+
+user=`sudo cat $dir/etc/passwd | grep 1000 | cut -d":" -f1`
+
+sudo umount $dir
+
+echo $user
+
+exit 0
+

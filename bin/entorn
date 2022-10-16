@@ -11,13 +11,18 @@ if [ "$1" == "stop" ]; then
 fi
 
 if [ "$1" == "restart" ]; then
-    entorn-status
+    entorn-restart
     exit 0
 fi
 
 if [ "$1" == "mount" ]; then
-    entorn-status
+    entorn-mount
     exit 0
+fi
+
+if [ "$1" == "umount" ]; then
+	entorn-umount
+	exit 0
 fi
 
 if [ "$1" == "update" ]; then
@@ -25,6 +30,20 @@ if [ "$1" == "update" ]; then
     exit 0
 fi
 
+if [ "$1" == "reset" ]; then
+    entorn-reset
+    exit 0
+fi
+
+if [ "$1" == "run" ]; then
+    entorn-run $2
+    exit 0
+fi
+
+if [ "$1" == "ssh" ]; then
+    entorn-ssh
+    exit 0
+fi
 
 ##
 # Color  Variables
@@ -48,15 +67,24 @@ echo ""
 echo "To stop Entorn:"
 echo "$(ColorGreen 'entorn stop')"
 echo ""
-echo "To restart Entorn:"
+echo "To restart (full restart) Entorn:"
 echo "$(ColorGreen 'entorn restart')"
+echo ""
+echo "To reset (light restart) Entorn:"
+echo "$(ColorGreen 'entorn reset')"
 echo ""
 echo "To update Entorn:"
 echo "$(ColorGreen 'entorn update [version]')"
 echo ""
-echo "To mount Entorn in your host:"
+echo "To (un)mount Entorn in your host:"
 echo "$(ColorGreen 'entorn mount')"
+echo "$(ColorGreen 'entorn umount')"
 echo ""
-
+echo "To run Entorn apps from the host:"
+echo "$(ColorGreen 'entorn run [app_name]')"
+echo ""
+echo "To connect to Entorn Server via ssh:"
+echo "$(ColorGreen 'entorn ssh')"
+echo ""
 
 

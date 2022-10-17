@@ -86,11 +86,12 @@ install_script reset
 install_script update
 install_script run
 install_script ssh
+install_script getuser
 
 cp ./bin/entorn $HOME/.local/bin/
 chmod +x $HOME/.local/bin/entorn
 
-cp ./k8s-dummy-local/config.yaml $HOME/.local/
+cp ./k8s-ilg-local/config.yaml $HOME/.local/
 
 if [ "$1" ]; then
     exit 0

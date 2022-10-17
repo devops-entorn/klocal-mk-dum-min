@@ -25,6 +25,14 @@ if [ "$user" == "" ]; then
 	exit 1
 fi
 
+echo "DISPLAY=$DISPLAY" > .sshenv
+echo "NB_USER=$user" >> .sshenv
+
+sshpass -p "$password" scp -P $port .sshenv $user@localhost:~/.ssh/environment 2> /dev/null
+
+rm -f .sshenv
+
+
 check_sshpass=$(dpkg -l | grep sshpass)
 
 if [ "$check_sshpass" == "" ]; then

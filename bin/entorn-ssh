@@ -8,6 +8,24 @@ else
     port=$1
 fi
 
+app=$1
+
+
+## dependencies
+check_depend() {
+	check_sshdep=$(dpkg -l | grep "$1")
+
+	if [ "$check_sshdep" == "" ]; then
+		echo "$1 is not installed. Installing it now ..."
+		sudo apt install "$1" -y > /dev/null 2>&1
+	fi
+}
+
+check_depend ssh
+check_depend sshfs
+check_depend sshpass
+
+
 user=$(entorn-getuser 2> /dev/null)
 
 if [ "$user" == "" ]; then
@@ -22,7 +40,7 @@ ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R "[localhost]:$port" > /dev/n
 echo "DISPLAY=$DISPLAY" > .sshenv
 echo "NB_USER=$user" >> .sshenv
 
-sshpass -p "$password" scp -P $port .sshenv $user@localhost:~/.ssh/environment 2> /dev/null
+sshpass -p "$password" scp -P $port -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null .sshenv $user@localhost:~/.ssh/environment 2> /dev/null
 
 rm -f .sshenv
 

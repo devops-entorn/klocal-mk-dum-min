@@ -1,0 +1,99 @@
+#!/bin/bash
+
+port2=7777
+
+show_help(){
+echo
+echo "## Shows a pod webapp into a host web browser (chrome, firefox) ##"
+echo
+echo "USAGE: entorn show [-p prefix] port1 [port2]"
+echo "Where:"
+echo "-> port1 is the port number where your webapp is listening on (MANDATORY)"
+echo "-> port2 is the port number where you want to access your webapp on the host (optional, defaults to $port2)"
+echo "-> prefix is the path prefix if your webapp uses a prefix (optional). It MUST start with slash (example: /user/name/sonarqube)"
+echo
+}
+prefix=$PREFIX
+while getopts :p:h opt; do
+    case $opt in 
+            h) show_help; exit ;;
+            p) prefix=${OPTARG} ;;
+            :) echo "Missing argument for option -$OPTARG"; exit 1;;
+           \?) echo "Unknown option -$OPTARG"; exit 1;;
+    esac
+done
+
+# here's the key part: remove the parsed options from the positional params
+shift $(( OPTIND - 1 ))
+
+if [ -z "$1" ]; then
+        echo "WARNING:"
+        echo "You need to pass the PORT number where the app listens to."
+        echo
+        exit 1
+fi
+port1=$1
+
+port2=${2:-7777}
+
+## dependencies
+check_depend() {
+check_sshdep=$(dpkg -l | grep "$1")
+
+if [ "$check_sshdep" == "" ]; then
+        echo "$1 is not installed. Installing it now ..."
+        sudo apt install "$1" -y > /dev/null 2>&1
+fi
+}
+
+check_depend ssh
+check_depend sshpass
+
+user=$(entorn-getuser 2> /dev/null)
+
+password=pluralcamp
+
+port=2222
+
+if [ "$user" == "" ]; then
+	echo "ERROR: Is you Entorn Server running?"
+	echo "You may try starting your Entorn Server from JupyterHub"
+	echo
+	exit 1
+fi
+
+#ssh-keygen -f "/home/$(whoami)/.ssh/known_hosts" -R "[localhost]:$port" > /dev/null 2>&1
+
+output=$(sudo lsof -i -P -n | grep LISTEN | grep $port2)
+
+if [ "$output" != "" ] ; then
+	lsof -ti:$port2 | xargs kill -9
+fi
+sshpass -p "$password" ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $port $user@localhost  -N -f -L $port2:localhost:$port1
+
+
+## for windows WSL
+## Open window if WSL
+kernel_ver=$(uname -a | grep WSL)
+if [ "$kernel_ver" != "" ]; then
+	chrome="/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+	firefox="/mnt/c/Program Files/Mozilla Firefox/firefox.exe"
+fi
+
+if [ -f "$chrome" ]; then
+        ## open webapp in chrome
+	"$chrome" -incognito --new-window http://local.entorn.io:$port2/$prefix
+elif [ -f "$firefox" ]; then
+	## open webapp in firefox
+	"$firefox" http://local.entorn.io:$port2/$prefix
+else
+        echo "Chrome and firefox browsers not found!"
+fi
+
+echo
+echo "Showing webapp in $port2 (host) -> $port1 (pod)"
+echo
+
+exit 0
+
+

@@ -86,19 +86,19 @@ install_script reset
 install_script update
 install_script run
 install_script ssh
-install_script getuser
+install_script show
 
 cp ./bin/entorn $HOME/.local/bin/
 chmod +x $HOME/.local/bin/entorn
 
-cp ./k8s-ilg-local/config.yaml $HOME/.local/
+cp ./kube-local/config.yaml $HOME/.local/
 
 if [ "$1" ]; then
     exit 0
 fi
 
 ## Kubernetes deployment
-cd ./k8s-ilg-local/
+cd ./kube-local/
 ./install-k8s-entorn.sh
 
 

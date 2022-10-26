@@ -45,6 +45,46 @@ if [ "$1" == "ssh" ]; then
     exit 0
 fi
 
+# entorn show
+show_help_show(){
+	entorn-show -h
+	exit 0
+}
+
+while getopts :h opt; do
+    case $opt in
+            h) show_help_show; exit ;;
+            :) echo "Missing argument for option -$OPTARG"; exit 1;;
+           \?) echo "Unknown option -$OPTARG"; exit 1;;
+    esac
+done
+
+if [ "$1" == "show" ]; then
+    re='^[0-9]+$'
+    if [ "$2" == "-p" ] && [[ ${3:0:1} == '/' ]] && [[ $4 =~ $re ]]; then
+	if [ "$5" != "" ]; then
+		if [[ $5 =~ $re ]]; then
+		        entorn-show -p $3 $4 $5
+		else
+			show_help_show
+		fi
+	else
+		entorn-show -p $3 $4
+	fi
+    elif [[ $2 =~ $re ]]; then
+	    if [[ $3 =~ $re ]] && [ "$4" == "" ]; then
+		    entorn-show $2 $3
+	    elif [ "$3" != "" ]; then
+		    show_help_show
+	    else
+		    entorn-show $2
+	    fi
+    else
+	show_help_show
+    fi
+    exit 0
+fi
+
 ##
 # Color  Variables
 ##

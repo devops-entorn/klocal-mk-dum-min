@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./k8s-ilg-local/
+cd ./kube-local/
 ./start-k8s-entorn.sh
 
 exit 0

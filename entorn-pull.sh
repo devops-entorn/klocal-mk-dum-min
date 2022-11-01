@@ -21,9 +21,10 @@ docker tag ${remote_base_name}-$1:$ver $local_base_name-$1:${ver} 2>/dev/null
 docker rmi ${remote_base_name}-$1:$ver 2>/dev/null
 }
 
-pull_image dev
-pull_image data
-pull_image ops
+#pull_image dev
+#pull_image data
+#pull_image ops
+pull_image full
 
 if ! docker pull ${remote_base_name}-hub-lti:$ver 2>/dev/null ; then
 	error=true
@@ -36,6 +37,14 @@ if ! docker pull ${remote_base_name}-dind:$ver 2>/dev/null ; then
 fi
 docker tag ${remote_base_name}-dind:$ver entorn-io/dind:${ver} 2>/dev/null 
 docker rmi ${remote_base_name}-dind:$ver 2>/dev/null
+
+remove_other (){
+	docker rmi -f $local_base_name-$1:$ver
+}
+
+remove_other dev
+remove_other data
+remove_other ops
 
 docker images | grep entorn | grep "$ver"
 

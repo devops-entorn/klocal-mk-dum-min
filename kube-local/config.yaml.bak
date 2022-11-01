@@ -77,12 +77,12 @@ singleuser:
       storageClass: hostpath 
     capacity: 20Gi
   image:
-    name: entorn-io/singleuser-full 
+    name: entorn-io/singleuser-dev 
     tag: 0.1.0
     pullPolicy: IfNotPresent
   profileList:
-    - display_name: "Entorn 22-23"
-      description: "Entorn v0.1.0"
+    - display_name: "Entorn DEV"
+      description: "Entorn de desenvolupament de programari"
       kubespawner_override:
         extra_containers:
           - name: docker
@@ -105,6 +105,56 @@ singleuser:
         security_context:
           privileged: true
           fsGroup: 100
+    - display_name: "Entorn BIO"
+      description: "Entorn de Data Science, BioInformàtica i Big Data"
+      kubespawner_override:
+        image: entorn-io/singleuser-data:0.1.0
+        extra_containers:
+          - name: docker
+            image: entorn-io/dind:0.1.0
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: ''
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - name: docker-data
+                mountPath: /var/lib/docker
+              - name: volume-{username}
+                mountPath: /home/{username}
+              - name: docker-sock-{username}
+                mountPath: /run
+              - name: dbdata
+                mountPath: /opt/dbdata                
+      security_context:
+        privileged: true
+        fsGroup: 100
+    - display_name: "Entorn OPS"
+      description: "Entorn bash, ansible, docker, jenkins"
+      kubespawner_override:
+        image: entorn-io/singleuser-ops:0.1.0
+        extra_containers:
+          - name: docker
+            image: entorn-io/dind:0.1.0
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: ''
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - name: docker-data
+                mountPath: /var/lib/docker
+              - name: volume-{username}
+                mountPath: /home/{username}
+              - name: docker-sock-{username}
+                mountPath: /run       
+              - name: dbdata
+                mountPath: /opt/dbdata                
+      security_context:
+        privileged: true
+        fsGroup: 100          
 hub:
   image:
     name: entorn-io/hub-lti

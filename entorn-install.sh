@@ -87,6 +87,7 @@ install_script update
 install_script run
 install_script ssh
 install_script show
+install_script getuser
 
 cp ./bin/entorn $HOME/.local/bin/
 chmod +x $HOME/.local/bin/entorn
